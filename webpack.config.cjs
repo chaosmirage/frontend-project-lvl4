@@ -7,9 +7,6 @@ const mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
   mode,
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
   output: {
     path: path.join(__dirname, 'dist', 'public'),
     publicPath: '/assets/',
@@ -30,6 +27,11 @@ module.exports = {
         use: 'babel-loader',
       },
       {
+        test: /\.ts(x)?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: [
           { loader: MiniCssExtractPlugin.loader },
@@ -39,5 +41,11 @@ module.exports = {
         ],
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
 };
