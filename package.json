@@ -20,6 +20,9 @@
   "author": "Kirill Mokevnin",
   "license": "ISC",
   "homepage": "",
+  "optionalDependencies": {
+    "fsevents": "^1.2.7"
+  },
   "dependencies": {
     "bootstrap": "^4.6.0",
     "core-js": "^3.12.1",
