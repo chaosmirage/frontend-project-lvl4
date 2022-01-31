@@ -1,0 +1,26 @@
+{
+  "ru": {
+    "translation": {
+      "appName": "Chat",
+      "errors": {
+        "requiredField": "Поле должно содержать значение",
+        "pageNotFound": "Страница не найдена"
+      },
+      "loginPage": {
+        "title": "Войти",
+        "loginForm": {
+          "username": "Ваш ник",
+          "password": "Пароль",
+          "submit": "Войти"
+        },
+        "dontHaveAcc": "Нет аккаунта?",
+        "actions": {
+          "registration": "Регистрация"
+        }
+      },
+      "notFoundPage": {
+        "goToMainPage": "Но вы можете перейти <linkto>на главную страницу<linkto/>"
+      }
+    }
+  }
+}

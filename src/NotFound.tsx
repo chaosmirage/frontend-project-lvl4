@@ -1,19 +1,22 @@
 import React from 'react';
 import type { FC } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 
 interface Props {}
 
 const NotFound: FC<Props> = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="text-center">
       <img
-        alt="Страница не найдена"
+        alt={t('errors.pageNotFound')}
         className="img-fluid"
         src="https://cdn2.hexlet.io/assets/error-pages/404-34f20d4d98c81c575950c89d4c49027513d0bb3f6adbb3ed85ca0923496f65df.png"
       />
-      <h1 className="h4 text-muted">Страница не найдена</h1>
+      <h1 className="h4 text-muted">{t('errors.pageNotFound')}</h1>
       <p className="text-muted">
-        Но вы можете перейти <a href="/">на главную страницу</a>
+        <Trans i18nKey="notFoundPage.goToMainPage" components={{ linkto: <a href="/" /> }} />
       </p>
     </div>
   );

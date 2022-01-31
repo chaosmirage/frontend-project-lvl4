@@ -2,9 +2,22 @@ import React from 'react';
 import type { FC } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import ru from './locales/ru.json';
+
 import Nav from './Nav';
 import Login from './Login';
 import NotFound from './NotFound';
+
+i18n.use(initReactI18next).init({
+  resources: ru,
+  lng: 'ru',
+  fallbackLng: 'ru',
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 const App: FC = () => (
   <div className="d-flex flex-column h-100">

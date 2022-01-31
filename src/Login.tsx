@@ -3,15 +3,18 @@ import React from 'react';
 import type { FC } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
-const LoginSchema = Yup.object().shape({
-  username: Yup.string().required('Required'),
-  password: Yup.string().required('Required'),
-});
+import { useTranslation, initReactI18next } from 'react-i18next';
 
 interface Props {}
 
 const Login: FC<Props> = () => {
+  const { t } = useTranslation();
+
+  const LoginSchema = Yup.object().shape({
+    username: Yup.string().required(t('errors.requiredField')),
+    password: Yup.string().required(t('errors.requiredField')),
+  });
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
@@ -38,20 +41,20 @@ const Login: FC<Props> = () => {
                   isSubmitting,
                 }) => (
                   <form className="col-12" onSubmit={handleSubmit}>
-                    <h1 className="text-center mb-4">Войти</h1>
+                    <h1 className="text-center mb-4">{t('loginPage.title')}</h1>
                     <div className="form-floating mb-3 form-group">
                       <input
                         name="username"
                         autoComplete="username"
                         required
-                        placeholder="Ваш ник"
+                        placeholder={t('loginPage.loginForm.username')}
                         id="username"
                         className="form-control"
                         value={values.username}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                      <label htmlFor="username">Ваш ник</label>
+                      <label htmlFor="username">{t('loginPage.loginForm.username')}</label>
                       {errors.username && touched.username && errors.username}
                     </div>
                     <div className="form-floating mb-4 form-group">
@@ -59,7 +62,7 @@ const Login: FC<Props> = () => {
                         name="password"
                         autoComplete="current-password"
                         required
-                        placeholder="Пароль"
+                        placeholder={t('loginPage.loginForm.password')}
                         type="password"
                         id="password"
                         className="form-control"
@@ -68,7 +71,7 @@ const Login: FC<Props> = () => {
                         onBlur={handleBlur}
                       />
                       <label className="form-label" htmlFor="password">
-                        Пароль
+                        {t('loginPage.loginForm.password')}
                       </label>
                       {errors.password && touched.password && errors.password}
                     </div>
@@ -77,7 +80,7 @@ const Login: FC<Props> = () => {
                       type="submit"
                       className="w-100 mb-3 btn btn-outline-primary"
                     >
-                      Войти
+                      {t('loginPage.loginForm.submit')}
                     </button>
                   </form>
                 )}
@@ -86,7 +89,8 @@ const Login: FC<Props> = () => {
           </div>
           <div className="card-footer p-4">
             <div className="text-center">
-              <span>Нет аккаунта?</span> <a href="/signup">Регистрация</a>
+              <span>{t('loginPage.dontHaveAcc')}</span>{' '}
+              <a href="/signup">{t('loginPage.actions.registration')}</a>
             </div>
           </div>
         </div>

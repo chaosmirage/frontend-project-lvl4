@@ -1,13 +1,18 @@
 import React from 'react';
 import type { FC } from 'react';
-import { render } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
-const Nav: FC = () => (
-  <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-    <a className="navbar-brand" href="/">
-      Chat
-    </a>
-  </div>
-);
+const Nav: FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+      <div className="container">
+        <a className="navbar-brand" href="/">
+          {t('appName')}
+        </a>
+      </div>
+    </div>
+  );
+};
 
 export default Nav;
