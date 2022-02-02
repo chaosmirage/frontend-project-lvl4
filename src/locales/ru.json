@@ -4,7 +4,8 @@
       "appName": "Chat",
       "errors": {
         "requiredField": "Поле должно содержать значение",
-        "pageNotFound": "Страница не найдена"
+        "pageNotFound": "Страница не найдена",
+        "invalidUserNameOrPassword": "Неверные имя пользователя или пароль"
       },
       "loginPage": {
         "title": "Войти",

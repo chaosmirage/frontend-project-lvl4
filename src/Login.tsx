@@ -3,78 +3,101 @@ import React from 'react';
 import type { FC } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { useTranslation, initReactI18next } from 'react-i18next';
+import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { Form, InputGroup, Col, Row } from 'react-bootstrap';
+import useAuth from './hooks/useAuth';
+import makeRequest from './lib/makeRequest';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
 const Login: FC<Props> = () => {
   const { t } = useTranslation();
+
+  const { logIn } = useAuth();
+
+  const navigate = useNavigate();
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required(t('errors.requiredField')),
     password: Yup.string().required(t('errors.requiredField')),
   });
 
+  const handleFormSubmit = async (values: any, { setSubmitting, setErrors }: any) => {
+    try {
+      const {
+        data: { token },
+      } = await makeRequest.post('/api/v1/login', values);
+
+      localStorage.setItem('APP_KEY', token);
+
+      logIn();
+
+      navigate('/');
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 401) {
+        setErrors({ password: t('errors.invalidUserNameOrPassword') });
+      }
+    }
+
+    setSubmitting(false);
+  };
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-8 col-xxl-6">
+        <div className="col-12">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={LoginSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                  }, 500);
-                }}
+                onSubmit={handleFormSubmit}
               >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                }) => (
-                  <form className="col-12" onSubmit={handleSubmit}>
+                {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                  <Form noValidate onSubmit={handleSubmit}>
                     <h1 className="text-center mb-4">{t('loginPage.title')}</h1>
-                    <div className="form-floating mb-3 form-group">
-                      <input
-                        name="username"
-                        autoComplete="username"
-                        required
-                        placeholder={t('loginPage.loginForm.username')}
-                        id="username"
-                        className="form-control"
-                        value={values.username}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                      />
-                      <label htmlFor="username">{t('loginPage.loginForm.username')}</label>
-                      {errors.username && touched.username && errors.username}
-                    </div>
-                    <div className="form-floating mb-4 form-group">
-                      <input
-                        name="password"
-                        autoComplete="current-password"
-                        required
-                        placeholder={t('loginPage.loginForm.password')}
-                        type="password"
-                        id="password"
-                        className="form-control"
-                        value={values.password}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                      />
-                      <label className="form-label" htmlFor="password">
-                        {t('loginPage.loginForm.password')}
-                      </label>
-                      {errors.password && touched.password && errors.password}
-                    </div>
+                    <Form.Group className="mb-3" controlId="validationFormikUsername2">
+                      <Form.FloatingLabel label={t('loginPage.loginForm.username')}>
+                        <Form.Control
+                          type="text"
+                          placeholder={t('loginPage.loginForm.username')}
+                          aria-describedby="inputGroupPrepend"
+                          name="username"
+                          value={values.username}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          isInvalid={!!errors.username || !!errors.password}
+                        />
+                        {errors.username && (
+                          <Form.Control.Feedback type="invalid" tooltip>
+                            {errors.username}
+                          </Form.Control.Feedback>
+                        )}
+                      </Form.FloatingLabel>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="validationFormikUsername2">
+                      <Form.FloatingLabel label={t('loginPage.loginForm.password')}>
+                        <Form.Control
+                          type="text"
+                          placeholder={t('loginPage.loginForm.password')}
+                          aria-describedby="inputGroupPrepend"
+                          name="password"
+                          value={values.password}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          isInvalid={!!errors.password}
+                        />
+                        {errors.password && (
+                          <Form.Control.Feedback type="invalid" tooltip>
+                            {errors.password}
+                          </Form.Control.Feedback>
+                        )}
+                      </Form.FloatingLabel>
+                    </Form.Group>
                     <button
                       disabled={isSubmitting}
                       type="submit"
@@ -82,7 +105,7 @@ const Login: FC<Props> = () => {
                     >
                       {t('loginPage.loginForm.submit')}
                     </button>
-                  </form>
+                  </Form>
                 )}
               </Formik>
             </div>
