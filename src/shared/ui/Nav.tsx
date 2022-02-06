@@ -2,7 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const Nav: FC = () => {
+export const Nav: FC = () => {
   const { t } = useTranslation();
   return (
     <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -14,5 +14,3 @@ const Nav: FC = () => {
     </div>
   );
 };
-
-export default Nav;

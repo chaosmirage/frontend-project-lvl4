@@ -10,10 +10,17 @@ extends:
   - 'plugin:prettier/recommended'
   - prettier
   - 'plugin:@typescript-eslint/recommended'
-  - 'plugin:import/errors'
-  - 'plugin:import/typescript'
+  - 'import'
+
+settings:
+  import/resolver:
+    typescript: {}
 
 parser: '@typescript-eslint/parser'
+
+parserOptions:
+  project: './tsconfig.json'
+  tsconfigRootDir: './'
 
 env:
   browser: true
@@ -28,3 +35,4 @@ rules:
   '@typescript-eslint/explicit-function-return-type': 0
   no-use-before-define: 0
   '@typescript-eslint/no-use-before-define': 0
+  import/prefer-default-export: 0

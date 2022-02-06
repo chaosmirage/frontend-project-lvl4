@@ -4,7 +4,7 @@ import { useTranslation, Trans } from 'react-i18next';
 
 interface Props {}
 
-const NotFound: FC<Props> = () => {
+export const NotFound: FC<Props> = () => {
   const { t } = useTranslation();
 
   return (
@@ -21,5 +21,3 @@ const NotFound: FC<Props> = () => {
     </div>
   );
 };
-
-export default NotFound;
