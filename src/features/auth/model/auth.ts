@@ -25,6 +25,7 @@ export const auth = () => {
       isLoggedIn = false;
     },
     isLoggedIn: () => isLoggedIn,
+    getToken: () => localStorage.getItem(TOKEN_KEY) || '',
   };
 };
 

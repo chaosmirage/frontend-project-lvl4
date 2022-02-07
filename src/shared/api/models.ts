@@ -6,3 +6,22 @@ export interface Credentials {
 export interface Token {
   token: string;
 }
+
+export interface Channel {
+  id: number;
+  name: string;
+  removable: boolean;
+}
+
+export interface Message {
+  body: string;
+  channelId: number;
+  id: number;
+  username: string;
+}
+
+export interface App {
+  channels: Channel[];
+  messages: Message[];
+  currentChannelId: number;
+}

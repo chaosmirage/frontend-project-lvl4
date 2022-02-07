@@ -4,6 +4,7 @@ import { Login } from './Login';
 import { NotFound } from './NotFound';
 import { AccessGuard } from './AccessGuard';
 import { useAuth } from 'features/auth';
+import { Dashboard } from './Dashboard';
 
 export const Routing = () => {
   const { isLoggedIn } = useAuth();
@@ -15,7 +16,7 @@ export const Routing = () => {
           path="/"
           element={
             <AccessGuard>
-              <div>main</div>
+              <Dashboard />
             </AccessGuard>
           }
         />
