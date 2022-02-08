@@ -10,7 +10,6 @@ extends:
   - 'plugin:prettier/recommended'
   - prettier
   - 'plugin:@typescript-eslint/recommended'
-  - 'import'
 
 settings:
   import/resolver:

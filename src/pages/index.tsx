@@ -3,12 +3,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './Login';
 import { NotFound } from './NotFound';
 import { AccessGuard } from './AccessGuard';
-import { useAuth } from 'features/auth';
-import { Dashboard } from './Dashboard';
+import { Messenger } from './Messenger';
 
 export const Routing = () => {
-  const { isLoggedIn } = useAuth();
-
   return (
     <BrowserRouter>
       <Routes>
@@ -16,7 +13,7 @@ export const Routing = () => {
           path="/"
           element={
             <AccessGuard>
-              <Dashboard />
+              <Messenger />
             </AccessGuard>
           }
         />

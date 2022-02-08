@@ -5,11 +5,11 @@ import { initReactI18next } from 'react-i18next';
 
 import '../../assets/application.scss';
 
-import ru from './locales/ru.json';
 import { Routing } from 'pages';
 import { AuthContext, makeAuthModel } from 'features/auth';
-import { ChannelContext, makeChannelModel } from 'entities/channel/model';
+import { MessengerContext, makeMessengerModel } from 'entities/messenger/model';
 import { Nav } from 'shared/ui/Nav';
+import ru from './locales/ru.json';
 
 i18n.use(initReactI18next).init({
   resources: ru,
@@ -22,16 +22,16 @@ i18n.use(initReactI18next).init({
 
 export const App: FC = () => {
   const [authModel] = useState(makeAuthModel());
-  const [channelModel] = useState(makeChannelModel());
+  const [messengerModel] = useState(makeMessengerModel());
 
   return (
     <AuthContext.Provider value={authModel}>
-      <ChannelContext.Provider value={channelModel}>
+      <MessengerContext.Provider value={messengerModel}>
         <div className="d-flex flex-column h-100">
           <Nav />
           <Routing />
         </div>
-      </ChannelContext.Provider>
+      </MessengerContext.Provider>
     </AuthContext.Provider>
   );
 };

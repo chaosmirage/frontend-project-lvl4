@@ -21,6 +21,15 @@
       },
       "notFoundPage": {
         "goToMainPage": "Но вы можете перейти <linkto>на главную страницу<linkto/>"
+      },
+      "messenger": {
+        "channels": "Каналы",
+        "messages_zero": "{{count}} сообщений",
+        "messages_one": "{{count}} сообщение",
+        "messages_two": "{{count}} сообщения",
+        "messages_few": "{{count}} сообщений",
+        "messages_many": "{{count}} сообщений",
+        "messages_other": "{{count}} сообщений"
       }
     }
   }

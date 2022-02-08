@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
 export const NotFound: FC<Props> = () => {

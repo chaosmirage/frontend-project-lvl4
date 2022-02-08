@@ -20,7 +20,7 @@ export interface Message {
   username: string;
 }
 
-export interface App {
+export interface Messenger {
   channels: Channel[];
   messages: Message[];
   currentChannelId: number;
