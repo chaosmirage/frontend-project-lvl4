@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +13,9 @@ import { useAuth } from 'features/auth';
 import { AddChannel } from 'features/channels/add';
 import { Channels } from 'features/channels/select';
 import { Messages } from 'features/messages/show';
-import { AddingMessageForm } from 'features/messages/add/';
 import { useAppDispatch, useAppSelector } from 'app';
+import { Message } from 'shared/api';
+import { AddingMessageForm } from 'features/messages/add/';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -40,6 +41,10 @@ export const Messenger: FC<Props> = () => {
     init();
   }, []);
 
+  const handleSubmit = useCallback((data: Partial<Message>) => {
+    console.log('send', data);
+  }, []);
+
   return (
     <Container className="container h-100 my-4 overflow-hidden rounded shadow">
       <Row className="row h-100 bg-white flex-md-row">
@@ -52,7 +57,7 @@ export const Messenger: FC<Props> = () => {
         </Col>
         <Col className="p-0 h-100">
           <Messages
-            addingMessage={<AddingMessageForm />}
+            addingMessage={<AddingMessageForm onSubmit={handleSubmit} />}
             currentChannel={currentChannel}
             currentChannelMessages={currentChannelMessages}
           />

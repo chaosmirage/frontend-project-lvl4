@@ -30,6 +30,10 @@
         "messages_few": "{{count}} сообщений",
         "messages_many": "{{count}} сообщений",
         "messages_other": "{{count}} сообщений"
+      },
+      "addMessages": {
+        "newMessage": "Новое сообщение",
+        "send": "Отправить"
       }
     }
   }
