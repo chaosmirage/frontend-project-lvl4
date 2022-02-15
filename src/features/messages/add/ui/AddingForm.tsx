@@ -7,7 +7,7 @@ import { Formik, FormikHelpers } from 'formik';
 import { makeAddingMessageSchema } from '../model';
 
 export interface AddingFormProps {
-  onSubmit: (data: Partial<Message>) => void;
+  onSubmit: (data: { body: Message['body'] }) => void;
 }
 
 // TODO: use Formik hook, extract disabled value to variable
@@ -15,11 +15,12 @@ export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
   const { t } = useTranslation();
 
   const handleSubmitForm = async (
-    data: Partial<Message>,
-    actions: FormikHelpers<Partial<Message>>
+    data: { body: Message['body'] },
+    actions: FormikHelpers<{ body: Message['body'] }>
   ) => {
     await onSubmit(data);
 
+    actions?.resetForm();
     actions?.setSubmitting(false);
   };
 

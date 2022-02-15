@@ -57,7 +57,7 @@ export const Messages: FC<MessagesProps> = ({
     <div className="d-flex flex-column h-100">
       <Statistics channel={currentChannel} messages={currentChannelMessages} />
       {currentChannelMessages.map((message) => {
-        return <Message message={message} />;
+        return <Message key={message.id} message={message} />;
       })}
       {addingMessage}
     </div>

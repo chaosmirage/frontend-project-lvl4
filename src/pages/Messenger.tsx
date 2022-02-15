@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import type { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from 'app';
 import { Message, messengerApi } from 'shared/api';
 import { AddingMessageForm } from 'features/messages/add/';
 import { getCurrentChannelMessagesSelector, Messages } from 'features/messages/show';
+import { makeMessagesConnection } from 'shared/api/messenger';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -29,6 +30,11 @@ export const Messenger: FC<Props> = () => {
   const currentChannel = useAppSelector(getCurrentChannelSelector);
   const currentChannelMessages = useAppSelector(getCurrentChannelMessagesSelector);
 
+  const { sendMessage, handleNewMessage, handleDisconnect, handleConnect } = useMemo(
+    () => makeMessagesConnection(),
+    []
+  );
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -41,11 +47,26 @@ export const Messenger: FC<Props> = () => {
     };
 
     init();
+
+    handleNewMessage((message) => {
+      dispatch(addMessages([message]));
+    });
+    handleDisconnect((reason) => {
+      console.log('disconnected', reason);
+    });
+    handleConnect((socket) => {
+      console.log('connected', socket.id);
+    });
   }, []);
 
-  const handleSubmit = useCallback((data: Partial<Message>) => {
-    console.log('send', data);
-  }, []);
+  const handleSubmit = useCallback(
+    ({ body }: { body: Message['body'] }) => {
+      if (currentChannel) {
+        sendMessage({ body, username: 'admin', channelId: currentChannel.id });
+      }
+    },
+    [currentChannel]
+  );
 
   return (
     <Container className="container h-100 my-4 overflow-hidden rounded shadow">
