@@ -10,6 +10,7 @@ export interface AddingFormProps {
   onSubmit: (data: Partial<Message>) => void;
 }
 
+// TODO: use Formik hook, extract disabled value to variable
 export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
   const { t } = useTranslation();
 

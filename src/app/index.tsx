@@ -14,7 +14,8 @@ import '../../assets/application.scss';
 
 import { Routing } from 'pages';
 import { AuthContext, makeAuthModel } from 'features/auth';
-import { messengerSlice } from 'entities/messenger/model';
+import { messagesSlice } from 'entities/messages';
+import { channelsSlice } from 'entities/channels';
 import { Nav } from 'shared/ui/Nav';
 import ru from './locales/ru.json';
 
@@ -28,7 +29,10 @@ i18n.use(initReactI18next).init({
 });
 
 export const store = configureStore({
-  reducer: combineReducers({ messenger: messengerSlice.reducer }),
+  reducer: combineReducers({
+    messagesDomain: messagesSlice.reducer,
+    channelsDomain: channelsSlice.reducer,
+  }),
 });
 
 export type AppDispatch = typeof store.dispatch;

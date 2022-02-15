@@ -4,18 +4,18 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
   getChannelsSelector,
-  getCurrentChannelMessagesSelector,
   getCurrentChannelSelector,
-  getData,
   DEFAULT_SELECTED_CHANNEL,
-} from 'entities/messenger/model';
+  addChannels,
+} from 'entities/channels';
+import { addMessages } from 'entities/messages';
 import { useAuth } from 'features/auth';
 import { AddChannel } from 'features/channels/add';
 import { Channels } from 'features/channels/select';
-import { Messages } from 'features/messages/show';
 import { useAppDispatch, useAppSelector } from 'app';
-import { Message } from 'shared/api';
+import { Message, messengerApi } from 'shared/api';
 import { AddingMessageForm } from 'features/messages/add/';
+import { getCurrentChannelMessagesSelector, Messages } from 'features/messages/show';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -32,7 +32,9 @@ export const Messenger: FC<Props> = () => {
   useEffect(() => {
     const init = async () => {
       try {
-        await dispatch(getData(getToken()));
+        const { data } = await messengerApi.getData(getToken());
+        dispatch(addMessages(data.messages));
+        dispatch(addChannels(data.channels));
       } catch (error) {
         console.log(error);
       }
