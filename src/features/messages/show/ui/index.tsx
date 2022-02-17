@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactElement, useEffect, useState } from 'react';
+import React, { ReactChild, ReactElement, useEffect, useState, useRef } from 'react';
 import type { FC } from 'react';
 import { AxiosError } from 'axios';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -30,10 +30,8 @@ interface MessageProps {
 
 export const Message: FC<MessageProps> = ({ message }) => {
   return (
-    <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-      <div className="text-break mb-2">
-        <b>{message.username}</b>: {message.body}
-      </div>
+    <div className="text-break mb-2">
+      <b>{message.username}</b>: {message.body}
     </div>
   );
 };
@@ -49,6 +47,14 @@ export const Messages: FC<MessagesProps> = ({
   currentChannel,
   currentChannelMessages,
 }) => {
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [currentChannelMessages]);
+
   if (!currentChannelMessages || !currentChannel) {
     return null;
   }
@@ -56,9 +62,15 @@ export const Messages: FC<MessagesProps> = ({
   return (
     <div className="d-flex flex-column h-100">
       <Statistics channel={currentChannel} messages={currentChannelMessages} />
-      {currentChannelMessages.map((message) => {
-        return <Message key={message.id} message={message} />;
-      })}
+      <div
+        ref={messagesContainerRef}
+        id="messages-box"
+        className="chat-messages overflow-auto px-5 "
+      >
+        {currentChannelMessages.map((message) => {
+          return <Message key={message.id} message={message} />;
+        })}
+      </div>
       {addingMessage}
     </div>
   );
