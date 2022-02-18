@@ -18,10 +18,14 @@ export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
     data: { body: Message['body'] },
     actions: FormikHelpers<{ body: Message['body'] }>
   ) => {
-    await onSubmit(data);
+    try {
+      await onSubmit(data);
 
-    actions?.resetForm();
-    actions?.setSubmitting(false);
+      actions?.resetForm();
+      actions?.setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -44,6 +48,7 @@ export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
                 className="border-0 p-0 ps-2 form-control"
                 aria-label={t('addMessages.newMessage')}
                 placeholder={`${t('addMessages.newMessage')}...`}
+                disabled={isSubmitting}
               />
               <div className="input-group-append">
                 <button

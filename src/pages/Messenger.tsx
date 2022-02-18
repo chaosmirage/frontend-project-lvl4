@@ -62,8 +62,20 @@ export const Messenger: FC<Props> = () => {
   const handleSubmit = useCallback(
     ({ body }: { body: Message['body'] }) => {
       if (currentChannel) {
-        sendMessage({ body, username: 'admin', channelId: currentChannel.id });
+        return new Promise<void>((resolve, reject) => {
+          sendMessage({ body, username: 'admin', channelId: currentChannel.id }, (response) => {
+            if (response.status === 'ok') {
+              resolve();
+            }
+          });
+
+          setTimeout(() => {
+            reject(new Error(t('errors.networkError')));
+          }, 5000);
+        });
       }
+
+      return Promise.reject();
     },
     [currentChannel]
   );

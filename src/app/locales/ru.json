@@ -5,7 +5,8 @@
       "errors": {
         "requiredField": "Поле должно содержать значение",
         "pageNotFound": "Страница не найдена",
-        "invalidUserNameOrPassword": "Неверные имя пользователя или пароль"
+        "invalidUserNameOrPassword": "Неверные имя пользователя или пароль",
+        "networkError": "Ошибка сети"
       },
       "loginPage": {
         "title": "Войти",

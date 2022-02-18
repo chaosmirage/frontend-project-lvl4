@@ -16,8 +16,11 @@ export const makeMessagesConnection = () => {
   const socketConnection = makeSocketConnection();
 
   return {
-    sendMessage: (message: Omit<Message, 'id'>) => {
-      socketConnection.emit('newMessage', message);
+    sendMessage: (
+      message: Omit<Message, 'id'>,
+      handler?: (response: { status: string }) => void
+    ) => {
+      socketConnection.emit('newMessage', message, handler);
     },
     handleConnect: (handler: (socket: typeof socketConnection) => void) => {
       socketConnection.on('connect', () => handler(socketConnection));
