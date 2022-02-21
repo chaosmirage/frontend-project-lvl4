@@ -7,13 +7,14 @@ import {
   getCurrentChannelSelector,
   DEFAULT_SELECTED_CHANNEL,
   addChannels,
+  selectChannel,
 } from 'entities/channels';
 import { addMessages } from 'entities/messages';
 import { useAuth } from 'features/auth';
 import { AddChannel } from 'features/channels/add';
 import { Channels } from 'features/channels/select';
 import { useAppDispatch, useAppSelector } from 'app';
-import { Message, messengerApi } from 'shared/api';
+import { Message, messengerApi, Channel } from 'shared/api';
 import { AddingMessageForm } from 'features/messages/add/';
 import { getCurrentChannelMessagesSelector, Messages } from 'features/messages/show';
 import { makeMessagesConnection } from 'shared/api/messenger';
@@ -80,6 +81,13 @@ export const Messenger: FC<Props> = () => {
     [currentChannel]
   );
 
+  const handleChangeChannel = useCallback(
+    (channel: Channel) => {
+      dispatch(selectChannel(channel.id));
+    },
+    [selectChannel, dispatch]
+  );
+
   return (
     <Container className="container h-100 my-4 overflow-hidden rounded shadow">
       <Row className="row h-100 bg-white flex-md-row">
@@ -87,7 +95,8 @@ export const Messenger: FC<Props> = () => {
           <AddChannel />
           <Channels
             data={channels}
-            defaultSelected={currentChannel?.id || DEFAULT_SELECTED_CHANNEL}
+            selectedChannel={currentChannel?.id || DEFAULT_SELECTED_CHANNEL}
+            onChangeChannel={handleChangeChannel}
           />
         </Col>
         <Col className="p-0 h-100">

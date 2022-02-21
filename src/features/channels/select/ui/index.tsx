@@ -7,15 +7,15 @@ import type { Channel } from 'shared/api';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {
   data: Channel[];
-  defaultSelected: number;
+  selectedChannel: Channel['id'];
+  onChangeChannel: (channel: Channel) => void;
 }
 
-export const Channels: FC<Props> = ({ data, defaultSelected }) => {
-  const [selectedChannel, changeSelectedChannel] = useState(defaultSelected);
+export const Channels: FC<Props> = ({ data, selectedChannel, onChangeChannel }) => {
   const { t } = useTranslation();
 
   const handleClickChannel = (channel: Channel) => () => {
-    changeSelectedChannel(channel.id);
+    onChangeChannel(channel);
   };
 
   return (
