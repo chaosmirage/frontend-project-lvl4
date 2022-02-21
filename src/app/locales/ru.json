@@ -6,7 +6,8 @@
         "requiredField": "Поле должно содержать значение",
         "pageNotFound": "Страница не найдена",
         "invalidUserNameOrPassword": "Неверные имя пользователя или пароль",
-        "networkError": "Ошибка сети"
+        "networkError": "Ошибка сети",
+        "mustBeUniq": "Должно быть уникальным"
       },
       "loginPage": {
         "title": "Войти",
@@ -35,6 +36,12 @@
       "addMessages": {
         "newMessage": "Новое сообщение",
         "send": "Отправить"
+      },
+      "addingChannel": {
+        "title": "Добавить канал",
+        "channelName": "Имя канала",
+        "send": "Отправить",
+        "cancel": "Отменить"
       }
     }
   }

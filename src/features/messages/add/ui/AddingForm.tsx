@@ -7,7 +7,7 @@ import { Formik, FormikHelpers } from 'formik';
 import { makeAddingMessageSchema } from '../model';
 
 export interface AddingFormProps {
-  onSubmit: (data: { body: Message['body'] }) => void;
+  onSubmit: (data: Pick<Message, 'body'>) => void;
 }
 
 // TODO: use Formik hook, extract disabled value to variable

@@ -1,18 +1,94 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import type { FC } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { Formik, FormikHelpers } from 'formik';
+import type { Channel } from 'shared/api';
+import { useAppSelector } from 'app';
+import { getChannelsNamesSelector } from 'entities/channels';
+import { makeAddingMessageSchema } from '../model';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Props {}
+export interface AddingChannelFormProps {
+  onSubmit: (data: Pick<Channel, 'name'>) => void;
+  onCancel: () => void;
+}
 
-export const AddChannel: FC<Props> = () => {
+export const AddingChannelForm: FC<AddingChannelFormProps> = ({ onSubmit, onCancel }) => {
+  const { t } = useTranslation();
+  const channelsNames = useAppSelector(getChannelsNamesSelector);
+
+  const handleSubmitForm = async (
+    data: Pick<Channel, 'name'>,
+    actions: FormikHelpers<{ name: Channel['name'] }>
+  ) => {
+    try {
+      await onSubmit(data);
+
+      actions?.resetForm();
+      actions?.setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Formik
+      initialValues={{ name: '' }}
+      validationSchema={makeAddingMessageSchema(t, channelsNames)}
+      onSubmit={handleSubmitForm}
+    >
+      {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+        <Form noValidate onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="validationFormikUsername2">
+            <Form.Control
+              type="text"
+              aria-describedby="inputGroupPrepend"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              aria-label={t('addingChannel.channelName')}
+              placeholder={`${t('addingChannel.channelName')}...`}
+              disabled={isSubmitting}
+              isInvalid={!!errors.name}
+            />
+            {errors.name && (
+              <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+            )}
+          </Form.Group>
+          <div className="d-flex justify-content-end">
+            <Button disabled={isSubmitting} variant="secondary" onClick={onCancel} className="me-2">
+              {t('addingChannel.cancel')}
+            </Button>
+            <Button disabled={isSubmitting} type="submit">
+              {t('addingChannel.send')}
+            </Button>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+interface AddingChannelProps {
+  onAddChannel: () => void;
+  children: ReactNode;
+}
+
+export const AddingChannel: FC<AddingChannelProps> = ({ onAddChannel, children }) => {
   const { t } = useTranslation();
 
   return (
     <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
       <span>{t('messenger.channels')}</span>
-      <Button variant="light" className="p-0 text-primary btn btn-group-vertical">
+      <Button
+        type="button"
+        variant="light"
+        className="p-0 text-primary btn btn-group-vertical"
+        onClick={() => {
+          onAddChannel();
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"
@@ -25,6 +101,7 @@ export const AddChannel: FC<Props> = () => {
         </svg>
         <span className="visually-hidden">+</span>
       </Button>
+      {children}
     </div>
   );
 };

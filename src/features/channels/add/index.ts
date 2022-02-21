@@ -1,1 +1,1 @@
-export { AddChannel } from './ui';
+export * from './ui';

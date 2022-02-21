@@ -1,6 +1,6 @@
 import type { AxiosPromise } from 'axios';
 import { makeRequest, makeSocketConnection } from '../../lib';
-import type { Messenger, Token, Message } from '../models';
+import type { Messenger, Token, Message, Channel } from '../models';
 
 const BASE_URL = '/data';
 
@@ -22,6 +22,12 @@ export const makeMessagesConnection = () => {
     ) => {
       socketConnection.emit('newMessage', message, handler);
     },
+    addChannel: (
+      message: Omit<Channel, 'id'>,
+      handler?: (response: { status: string; data: Channel }) => void
+    ) => {
+      socketConnection.emit('newChannel', message, handler);
+    },
     handleConnect: (handler: (socket: typeof socketConnection) => void) => {
       socketConnection.on('connect', () => handler(socketConnection));
     },
@@ -30,6 +36,9 @@ export const makeMessagesConnection = () => {
     },
     handleNewMessage: (handler: (message: Message) => void) => {
       socketConnection.on('newMessage', handler);
+    },
+    handleNewChannel: (handler: (channel: Channel) => void) => {
+      socketConnection.on('newChannel', handler);
     },
   };
 };

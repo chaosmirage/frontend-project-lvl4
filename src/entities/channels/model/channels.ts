@@ -48,6 +48,10 @@ export const getChannelsSelector = createSelector(
   (channelsState) => channelsState.channels
 );
 
+export const getChannelsNamesSelector = createSelector(getChannels, (channelsState) =>
+  channelsState.channels.map(({ name }) => name)
+);
+
 export const getCurrentChannelSelector = createSelector(
   getChannels,
   (channelsState: ChannelsState) => {
