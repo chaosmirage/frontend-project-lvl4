@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import type { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import {
   getChannelsSelector,
   getCurrentChannelSelector,
@@ -128,6 +129,7 @@ export const Messenger: FC<Props> = () => {
             resolve();
             dispatch(selectChannelAction(response.data.id));
             changeProcessName(null);
+            toast.success(t('addingChannel.channelWasAdded'));
           }
         });
 
@@ -149,6 +151,7 @@ export const Messenger: FC<Props> = () => {
             resolve();
             changeProcessName(null);
             changeActiveChannel(null);
+            toast.success(t('deletingChannel.channelWasDeleted'));
           }
         });
 
@@ -167,6 +170,7 @@ export const Messenger: FC<Props> = () => {
           if (response.status === 'ok') {
             resolve();
             changeProcessName(null);
+            toast.success(t('renamingChannel.channelWasRenamed'));
           }
         });
 
@@ -191,7 +195,6 @@ export const Messenger: FC<Props> = () => {
               changeActiveChannel({ id, name: '' });
             }}
             onRenameChannel={({ id, name }: Pick<Channel, 'id' | 'name'>) => {
-              console.log('id', id);
               changeProcessName('renamingChannel');
               changeActiveChannel({ id, name });
             }}

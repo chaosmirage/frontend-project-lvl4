@@ -44,17 +44,20 @@
         "title": "Добавить канал",
         "channelName": "Имя канала",
         "send": "Отправить",
-        "cancel": "Отменить"
+        "cancel": "Отменить",
+        "channelWasAdded": "Канал создан"
       },
       "deletingChannel": {
         "title": "Удалить канал",
         "delete": "Удалить",
         "confirmDeleting": "Уверены?",
-        "cancel": "Отменить"
+        "cancel": "Отменить",
+        "channelWasDeleted": "Канал удалён"
       },
       "renamingChannel": {
         "title": "Переименовать канал",
-        "rename": "Переименовать"
+        "rename": "Переименовать",
+        "channelWasRenamed": "Канал переименован"
       }
     }
   }

@@ -9,7 +9,9 @@ import {
   useSelector,
 } from 'react-redux';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { ToastContainer } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 import '../../assets/application.scss';
 
 import { Routing } from 'pages';
@@ -51,6 +53,7 @@ export const App: FC = () => {
           <Nav />
           <Routing />
         </div>
+        <ToastContainer />
       </AuthContext.Provider>
     </ReduxProvider>
   );
