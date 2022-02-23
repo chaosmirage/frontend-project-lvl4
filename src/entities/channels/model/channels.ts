@@ -1,6 +1,5 @@
 import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'app';
-import _ from 'lodash';
 import { Channel, messengerApi, Token } from 'shared/api';
 
 export const DEFAULT_SELECTED_CHANNEL = 1;

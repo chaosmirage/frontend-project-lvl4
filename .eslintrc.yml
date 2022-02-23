@@ -10,6 +10,7 @@ extends:
   - 'plugin:prettier/recommended'
   - prettier
   - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:react-hooks/recommended'
 
 settings:
   import/resolver:

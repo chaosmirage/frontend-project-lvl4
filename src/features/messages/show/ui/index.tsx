@@ -1,12 +1,8 @@
-import React, { ReactChild, ReactElement, useEffect, useState, useRef } from 'react';
+import React, { ReactElement, useEffect, useRef } from 'react';
 import type { FC } from 'react';
-import { AxiosError } from 'axios';
-import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from 'features/auth';
 import type { Channel, Message as MessageI } from 'shared/api';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface StatisticsProps {
   channel: Channel;
   messages: MessageI[];

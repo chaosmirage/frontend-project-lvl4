@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useLayoutEffect } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 
 import 'core-js/stable/index.js';

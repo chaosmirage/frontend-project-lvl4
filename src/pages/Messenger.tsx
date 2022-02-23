@@ -91,7 +91,16 @@ export const Messenger: FC<Props> = () => {
     handleConnect((socket) => {
       console.log('connected', socket.id);
     });
-  }, []);
+  }, [
+    dispatch,
+    getToken,
+    handleConnect,
+    handleDeletedChannel,
+    handleDisconnect,
+    handleNewChannel,
+    handleNewMessage,
+    handleRenamedChannel,
+  ]);
 
   const handleSubmit = useCallback(
     ({ body }: Pick<Message, 'body'>) => {
@@ -111,14 +120,14 @@ export const Messenger: FC<Props> = () => {
 
       return Promise.reject();
     },
-    [currentChannel]
+    [currentChannel, sendMessage, t]
   );
 
   const handleChangeChannel = useCallback(
     (channel: Channel) => {
       dispatch(selectChannelAction(channel.id));
     },
-    [selectChannelAction, dispatch]
+    [dispatch]
   );
 
   const handleAddChannel = useCallback(
@@ -138,7 +147,7 @@ export const Messenger: FC<Props> = () => {
         }, 5000);
       });
     },
-    [dispatch]
+    [addChannel, dispatch, t]
   );
 
   const handleDeleteChannel = useCallback(
@@ -160,7 +169,7 @@ export const Messenger: FC<Props> = () => {
         }, 5000);
       });
     },
-    [dispatch]
+    [deleteChannel, t]
   );
 
   const handleRenameChannel = useCallback(
@@ -179,7 +188,7 @@ export const Messenger: FC<Props> = () => {
         }, 5000);
       });
     },
-    [dispatch]
+    [renameChannel, t]
   );
 
   return (
