@@ -97,8 +97,8 @@ export const Messenger: FC<Props> = () => {
     handleDisconnect((reason) => {
       console.log('disconnected', reason);
     });
-    handleConnect((socket) => {
-      console.log('connected', socket.id);
+    handleConnect(() => {
+      console.log('connected');
     });
 
     return () => {
