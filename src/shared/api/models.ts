@@ -7,6 +7,8 @@ export interface Token {
   token: string;
 }
 
+export type User = Token & Pick<Credentials, 'username'>;
+
 export interface Channel {
   id: number;
   name: string;

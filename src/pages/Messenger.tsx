@@ -7,12 +7,14 @@ import {
   getChannelsSelector,
   getCurrentChannelSelector,
   DEFAULT_SELECTED_CHANNEL,
+  setInitialChannels as setInitialChannelsAction,
   addChannels as addChannelsAction,
   deleteChannel as deleteChannelAction,
   selectChannel as selectChannelAction,
   renameChannel as renameChannelAction,
 } from 'entities/channels';
 import {
+  setInitialMessages as setInitialMessagesAction,
   addMessages as addMessagesAction,
   deleteMessagesByChannel as deleteMessagesByChannelAction,
 } from 'entities/messages';
@@ -38,7 +40,7 @@ export const Messenger: FC<Props> = () => {
   const [activeChannel, changeActiveChannel] = useState<Omit<Channel, 'removable'> | null>(null);
 
   const { t } = useTranslation();
-  const { getToken } = useAuth();
+  const { user } = useAuth();
   const dispatch = useAppDispatch();
 
   const channels = useAppSelector(getChannelsSelector);
@@ -62,9 +64,9 @@ export const Messenger: FC<Props> = () => {
   useEffect(() => {
     const init = async () => {
       try {
-        const { data } = await messengerApi.getData(getToken());
-        dispatch(addMessagesAction(data.messages));
-        dispatch(addChannelsAction(data.channels));
+        const { data } = await messengerApi.getData(user.token);
+        dispatch(setInitialMessagesAction(data.messages));
+        dispatch(setInitialChannelsAction(data.channels));
       } catch (error) {
         console.log(error);
       }
@@ -99,24 +101,27 @@ export const Messenger: FC<Props> = () => {
   }, [
     disconnect,
     dispatch,
-    getToken,
     handleConnect,
     handleDeletedChannel,
     handleDisconnect,
     handleNewChannel,
     handleNewMessage,
     handleRenamedChannel,
+    user.token,
   ]);
 
   const handleSubmit = useCallback(
     ({ body }: Pick<Message, 'body'>) => {
       if (currentChannel) {
         return new Promise<void>((resolve, reject) => {
-          sendMessage({ body, username: 'admin', channelId: currentChannel.id }, (response) => {
-            if (response.status === 'ok') {
-              resolve();
+          sendMessage(
+            { body, username: user.username, channelId: currentChannel.id },
+            (response) => {
+              if (response.status === 'ok') {
+                resolve();
+              }
             }
-          });
+          );
 
           setTimeout(() => {
             reject(new Error(t('errors.networkError')));
@@ -126,7 +131,7 @@ export const Messenger: FC<Props> = () => {
 
       return Promise.reject();
     },
-    [currentChannel, sendMessage, t]
+    [currentChannel, sendMessage, t, user.username]
   );
 
   const handleChangeChannel = useCallback(

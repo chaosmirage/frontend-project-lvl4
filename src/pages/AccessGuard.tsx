@@ -1,13 +1,15 @@
 import React from 'react';
-import type { FC, ReactElement } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useAuth } from 'features/auth';
 import { Navigate } from 'react-router-dom';
+import { GUEST } from 'entities/guest';
 
-export const AccessGuard: FC<{ children?: ReactElement }> = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+export const AccessGuard: FC<{ children: ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
 
-  if (isLoggedIn() && children) {
-    return children;
+  if (user !== GUEST) {
+    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/18051
+    return <>{children}</>;
   }
 
   return <Navigate to="/login" />;

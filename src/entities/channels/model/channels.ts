@@ -26,6 +26,9 @@ export const channelsSlice = createSlice({
   name: 'channelsDomain',
   initialState,
   reducers: {
+    setInitialChannels(state, { payload }) {
+      state.channels = payload;
+    },
     addChannels(state, { payload }) {
       state.channels.push(...payload);
     },
@@ -74,4 +77,5 @@ export const getCurrentChannelSelector = createSelector(
   }
 );
 
-export const { addChannels, selectChannel, deleteChannel, renameChannel } = channelsSlice.actions;
+export const { addChannels, selectChannel, deleteChannel, renameChannel, setInitialChannels } =
+  channelsSlice.actions;

@@ -2,12 +2,17 @@
   "ru": {
     "translation": {
       "appName": "Chat",
+      "navPanel": {
+        "logout": "Выйти"
+      },
       "errors": {
         "requiredField": "Поле должно содержать значение",
         "pageNotFound": "Страница не найдена",
         "invalidUserNameOrPassword": "Неверные имя пользователя или пароль",
         "networkError": "Ошибка сети",
-        "mustBeUniq": "Должно быть уникальным"
+        "mustBeUniq": "Должно быть уникальным",
+        "mustBeEqualPasswords": "Пароли должны совпадать",
+        "userAlreadyExist": "Такой пользователь уже существует"
       },
       "loginPage": {
         "title": "Войти",
@@ -19,6 +24,21 @@
         "dontHaveAcc": "Нет аккаунта?",
         "actions": {
           "registration": "Регистрация"
+        }
+      },
+      "signUpPage": {
+        "title": "Регистрация",
+        "signUpForm": {
+          "username": "Имя пользователя",
+          "password": "Пароль",
+          "confirmPassword": "Подтвердите пароль"
+        },
+        "actions": {
+          "signUp": "Зарегистрироваться"
+        },
+        "errors": {
+          "min": "Не менее 6 символов",
+          "range": "От 3 до 20 символов"
         }
       },
       "notFoundPage": {

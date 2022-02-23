@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const Nav: FC = () => {
+interface Props {
+  logoutButton: ReactNode;
+}
+
+export const Nav: FC<Props> = ({ logoutButton }) => {
   const { t } = useTranslation();
   return (
     <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -10,6 +14,7 @@ export const Nav: FC = () => {
         <a className="navbar-brand" href="/">
           {t('appName')}
         </a>
+        {logoutButton}
       </div>
     </div>
   );

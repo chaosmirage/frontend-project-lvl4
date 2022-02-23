@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import type { FC } from 'react';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -15,10 +15,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../../assets/application.scss';
 
 import { Routing } from 'pages';
-import { AuthContext, makeAuthModel } from 'features/auth';
+import { AuthProvider } from 'features/auth';
 import { messagesSlice } from 'entities/messages';
 import { channelsSlice } from 'entities/channels';
-import { Nav } from 'shared/ui/Nav';
 import ru from './locales/ru.json';
 
 i18n.use(initReactI18next).init({
@@ -44,17 +43,18 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const App: FC = () => {
-  const [authModel] = useState(makeAuthModel());
+  useEffect(() => {
+    localStorage.debug = 'chat:*';
+  }, []);
 
   return (
     <ReduxProvider store={store}>
-      <AuthContext.Provider value={authModel}>
+      <AuthProvider>
         <div className="d-flex flex-column h-100">
-          <Nav />
           <Routing />
         </div>
         <ToastContainer />
-      </AuthContext.Provider>
+      </AuthProvider>
     </ReduxProvider>
   );
 };

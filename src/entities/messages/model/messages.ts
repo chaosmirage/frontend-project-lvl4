@@ -25,6 +25,9 @@ export const messagesSlice = createSlice({
   name: 'messagesDomain',
   initialState,
   reducers: {
+    setInitialMessages(state, { payload }) {
+      state.messages = payload;
+    },
     addMessages(state, { payload }) {
       state.messages.push(...payload);
     },
@@ -47,4 +50,4 @@ export const getMessagesSelector = createSelector(getMessages, (state) => {
   return state.messages;
 });
 
-export const { addMessages, deleteMessagesByChannel } = messagesSlice.actions;
+export const { addMessages, deleteMessagesByChannel, setInitialMessages } = messagesSlice.actions;

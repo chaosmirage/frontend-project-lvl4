@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Message } from 'shared/api';
@@ -14,6 +14,8 @@ export interface AddingFormProps {
 export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
   const { t } = useTranslation();
 
+  const bodyInputRef = useRef<HTMLInputElement>(null);
+
   const handleSubmitForm = async (
     data: { body: Message['body'] },
     actions: FormikHelpers<{ body: Message['body'] }>
@@ -23,6 +25,7 @@ export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
 
       actions?.resetForm();
       actions?.setSubmitting(false);
+      bodyInputRef.current?.focus();
     } catch (error) {
       console.log(error);
     }
@@ -49,6 +52,7 @@ export const AddingForm: FC<AddingFormProps> = ({ onSubmit }) => {
                 aria-label={t('addMessages.newMessage')}
                 placeholder={`${t('addMessages.newMessage')}...`}
                 disabled={isSubmitting}
+                ref={bodyInputRef}
               />
               <div className="input-group-append">
                 <button

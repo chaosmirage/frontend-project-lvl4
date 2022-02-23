@@ -1,2 +1,1 @@
-export { auth as makeAuthModel, makeCredentialsSchema, AuthContext, useAuth } from './model';
-export type { Auth } from './model';
+export { makeCredentialsSchema, AuthProvider, useAuth } from './model';

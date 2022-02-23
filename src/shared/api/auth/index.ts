@@ -1,9 +1,12 @@
 import type { AxiosPromise } from 'axios';
+import { apiRoutes } from 'shared/config';
 import { makeRequest } from '../../lib';
-import type { Credentials, Token } from '../models';
+import type { Credentials, User } from '../models';
 
-const BASE_URL = '/login';
+export const login = (credentials: Credentials): AxiosPromise<User> => {
+  return makeRequest.post(apiRoutes.login(), credentials);
+};
 
-export const auth = (credentials: Credentials): AxiosPromise<Token> => {
-  return makeRequest.post(`${BASE_URL}`, credentials);
+export const signUp = (credentials: Credentials): AxiosPromise<User> => {
+  return makeRequest.post(apiRoutes.signUp(), credentials);
 };

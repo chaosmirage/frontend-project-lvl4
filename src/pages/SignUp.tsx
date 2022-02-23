@@ -6,35 +6,33 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from 'features/auth';
-import { LoginForm } from 'features/auth/ui/LoginForm';
-import { Credentials } from 'shared/api';
-import { pageRoutes } from 'shared/config';
+import { SignUpForm } from 'features/auth/ui/SignUpForm';
+import type { FormCredentials } from 'features/auth/ui/SignUpForm';
 import { guestModel } from 'entities/guest';
+import { pageRoutes } from 'shared/config';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
-export const Login: FC<Props> = () => {
+export const SignUp: FC<Props> = () => {
   const { t } = useTranslation();
 
-  const { logIn, logOut } = useAuth();
+  const { logIn } = useAuth();
 
   const navigate = useNavigate();
 
   const handleFormSubmit = async (
-    values: Credentials,
-    { setErrors, setSubmitting }: FormikHelpers<Credentials>
+    values: FormCredentials,
+    { setErrors, setSubmitting }: FormikHelpers<FormCredentials>
   ) => {
     try {
-      const user = await guestModel.logIn(values);
+      const user = await guestModel.signUp(values);
       logIn(user);
-
       navigate(pageRoutes.root());
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
-      if (axiosError.response?.status === 401) {
-        setErrors({ password: t('errors.invalidUserNameOrPassword') });
-        logOut();
+      if (axiosError.response?.status === 409) {
+        setErrors({ username: t('errors.userAlreadyExist') });
       }
     }
 
@@ -47,13 +45,7 @@ export const Login: FC<Props> = () => {
         <div className="col-sm-8 col-md-4">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
-              <LoginForm onSubmit={handleFormSubmit} />
-            </div>
-          </div>
-          <div className="card-footer p-4">
-            <div className="text-center">
-              <span>{t('loginPage.dontHaveAcc')}</span>{' '}
-              <a href={pageRoutes.signUp()}>{t('loginPage.actions.registration')}</a>
+              <SignUpForm onSubmit={handleFormSubmit} />
             </div>
           </div>
         </div>
