@@ -1,4 +1,4 @@
-import { createSlice, createSelector, createAsyncThunk, createAction } from '@reduxjs/toolkit';
+import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'app';
 import _ from 'lodash';
 import { Channel, messengerApi, Token } from 'shared/api';
@@ -33,6 +33,22 @@ export const channelsSlice = createSlice({
     selectChannel(state, { payload }) {
       state.currentChannelId = payload;
     },
+    deleteChannel(state, { payload: channelId }) {
+      state.channels = state.channels.filter(({ id }) => id !== channelId);
+    },
+    renameChannel(state, { payload: { id, name } }: { payload: Channel }) {
+      state.channels = state.channels.reduce((acc, channel) => {
+        if (channel.id === id) {
+          acc.push({ ...channel, name });
+
+          return acc;
+        }
+
+        acc.push(channel);
+
+        return acc;
+      }, [] as Channel[]);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addChannel.fulfilled, (state, action) => {
@@ -59,4 +75,4 @@ export const getCurrentChannelSelector = createSelector(
   }
 );
 
-export const { addChannels, selectChannel } = channelsSlice.actions;
+export const { addChannels, selectChannel, deleteChannel, renameChannel } = channelsSlice.actions;

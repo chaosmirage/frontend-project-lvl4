@@ -33,6 +33,9 @@
         "messages_many": "{{count}} сообщений",
         "messages_other": "{{count}} сообщений"
       },
+      "channels": {
+        "channelsManaging": "Управление каналом"
+      },
       "addMessages": {
         "newMessage": "Новое сообщение",
         "send": "Отправить"
@@ -42,6 +45,16 @@
         "channelName": "Имя канала",
         "send": "Отправить",
         "cancel": "Отменить"
+      },
+      "deletingChannel": {
+        "title": "Удалить канал",
+        "delete": "Удалить",
+        "confirmDeleting": "Уверены?",
+        "cancel": "Отменить"
+      },
+      "renamingChannel": {
+        "title": "Переименовать канал",
+        "rename": "Переименовать"
       }
     }
   }

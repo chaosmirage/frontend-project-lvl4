@@ -28,6 +28,9 @@ export const messagesSlice = createSlice({
     addMessages(state, { payload }) {
       state.messages.push(...payload);
     },
+    deleteMessagesByChannel(state, { payload: id }) {
+      state.messages = state.messages.filter(({ channelId }) => channelId !== id);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addMessage.fulfilled, (state, action) => {
@@ -44,4 +47,4 @@ export const getMessagesSelector = createSelector(getMessages, (state) => {
   return state.messages;
 });
 
-export const { addMessages } = messagesSlice.actions;
+export const { addMessages, deleteMessagesByChannel } = messagesSlice.actions;

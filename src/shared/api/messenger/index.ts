@@ -12,6 +12,9 @@ export const getData = (token: Token['token']): AxiosPromise<Messenger> => {
   });
 };
 
+type EmitEventTypes = 'newChannel' | 'removeChannel' | 'newMessage' | 'renameChannel';
+type HandleEventTypes = 'connect' | 'disconnect' | EmitEventTypes;
+
 export const makeMessagesConnection = () => {
   const socketConnection = makeSocketConnection();
 
@@ -20,25 +23,43 @@ export const makeMessagesConnection = () => {
       message: Omit<Message, 'id'>,
       handler?: (response: { status: string }) => void
     ) => {
-      socketConnection.emit('newMessage', message, handler);
+      socketConnection.emit<EmitEventTypes>('newMessage', message, handler);
     },
     addChannel: (
-      message: Omit<Channel, 'id'>,
+      channel: Omit<Channel, 'id'>,
       handler?: (response: { status: string; data: Channel }) => void
     ) => {
-      socketConnection.emit('newChannel', message, handler);
+      socketConnection.emit<EmitEventTypes>('newChannel', channel, handler);
+    },
+    deleteChannel: (
+      channel: Pick<Channel, 'id'>,
+      handler?: (response: { status: string }) => void
+    ) => {
+      socketConnection.emit<EmitEventTypes>('removeChannel', channel, handler);
+    },
+    renameChannel: (
+      channel: Omit<Channel, 'removable'>,
+      handler?: (response: { status: string }) => void
+    ) => {
+      socketConnection.emit<EmitEventTypes>('renameChannel', channel, handler);
     },
     handleConnect: (handler: (socket: typeof socketConnection) => void) => {
-      socketConnection.on('connect', () => handler(socketConnection));
+      socketConnection.on<HandleEventTypes>('connect', () => handler(socketConnection));
     },
     handleDisconnect: (handler: (reason: string) => void) => {
-      socketConnection.on('disconnect', handler);
+      socketConnection.on<HandleEventTypes>('disconnect', handler);
     },
     handleNewMessage: (handler: (message: Message) => void) => {
-      socketConnection.on('newMessage', handler);
+      socketConnection.on<HandleEventTypes>('newMessage', handler);
     },
     handleNewChannel: (handler: (channel: Channel) => void) => {
-      socketConnection.on('newChannel', handler);
+      socketConnection.on<HandleEventTypes>('newChannel', handler);
+    },
+    handleDeletedChannel: (handler: (channel: Pick<Channel, 'id'>) => void) => {
+      socketConnection.on<HandleEventTypes>('removeChannel', handler);
+    },
+    handleRenamedChannel: (handler: (channel: Channel) => void) => {
+      socketConnection.on<HandleEventTypes>('renameChannel', handler);
     },
   };
 };

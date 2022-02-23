@@ -6,12 +6,19 @@ import {
   getChannelsSelector,
   getCurrentChannelSelector,
   DEFAULT_SELECTED_CHANNEL,
-  addChannels,
-  selectChannel,
+  addChannels as addChannelsAction,
+  deleteChannel as deleteChannelAction,
+  selectChannel as selectChannelAction,
+  renameChannel as renameChannelAction,
 } from 'entities/channels';
-import { addMessages } from 'entities/messages';
+import {
+  addMessages as addMessagesAction,
+  deleteMessagesByChannel as deleteMessagesByChannelAction,
+} from 'entities/messages';
 import { useAuth } from 'features/auth';
 import { AddingChannel, AddingChannelForm } from 'features/channels/add';
+import { DeletingChannel } from 'features/channels/delete';
+import { RenamingChannelForm } from 'features/channels/rename';
 import { Channels } from 'features/channels/select';
 import { useAppDispatch, useAppSelector } from 'app';
 import { Message, messengerApi, Channel } from 'shared/api';
@@ -23,10 +30,11 @@ import { Modal } from 'shared/ui';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
-type MessengerProcess = 'addingChannel' | null;
+type MessengerProcess = 'addingChannel' | 'deletingChannel' | 'renamingChannel' | null;
 
 export const Messenger: FC<Props> = () => {
   const [processName, changeProcessName] = useState<MessengerProcess>(null);
+  const [activeChannel, changeActiveChannel] = useState<Omit<Channel, 'removable'> | null>(null);
 
   const { t } = useTranslation();
   const { getToken } = useAuth();
@@ -39,18 +47,22 @@ export const Messenger: FC<Props> = () => {
   const {
     sendMessage,
     addChannel,
+    deleteChannel,
+    renameChannel,
     handleNewMessage,
     handleDisconnect,
     handleConnect,
     handleNewChannel,
+    handleDeletedChannel,
+    handleRenamedChannel,
   } = useMemo(() => makeMessagesConnection(), []);
 
   useEffect(() => {
     const init = async () => {
       try {
         const { data } = await messengerApi.getData(getToken());
-        dispatch(addMessages(data.messages));
-        dispatch(addChannels(data.channels));
+        dispatch(addMessagesAction(data.messages));
+        dispatch(addChannelsAction(data.channels));
       } catch (error) {
         console.log(error);
       }
@@ -59,10 +71,18 @@ export const Messenger: FC<Props> = () => {
     init();
 
     handleNewMessage((message) => {
-      dispatch(addMessages([message]));
+      dispatch(addMessagesAction([message]));
     });
     handleNewChannel((channel) => {
-      dispatch(addChannels([channel]));
+      dispatch(addChannelsAction([channel]));
+    });
+    handleDeletedChannel((channel) => {
+      dispatch(deleteChannelAction(channel.id));
+      dispatch(deleteMessagesByChannelAction(channel.id));
+      dispatch(selectChannelAction(DEFAULT_SELECTED_CHANNEL));
+    });
+    handleRenamedChannel((channel) => {
+      dispatch(renameChannelAction(channel));
     });
     handleDisconnect((reason) => {
       console.log('disconnected', reason);
@@ -95,9 +115,9 @@ export const Messenger: FC<Props> = () => {
 
   const handleChangeChannel = useCallback(
     (channel: Channel) => {
-      dispatch(selectChannel(channel.id));
+      dispatch(selectChannelAction(channel.id));
     },
-    [selectChannel, dispatch]
+    [selectChannelAction, dispatch]
   );
 
   const handleAddChannel = useCallback(
@@ -106,7 +126,46 @@ export const Messenger: FC<Props> = () => {
         addChannel({ name, removable: true }, (response) => {
           if (response.status === 'ok') {
             resolve();
-            dispatch(selectChannel(response.data.id));
+            dispatch(selectChannelAction(response.data.id));
+            changeProcessName(null);
+          }
+        });
+
+        setTimeout(() => {
+          reject(new Error(t('errors.networkError')));
+        }, 5000);
+      });
+    },
+    [dispatch]
+  );
+
+  const handleDeleteChannel = useCallback(
+    (id: Channel['id']) => {
+      return new Promise<void>((resolve, reject) => {
+        changeProcessName('deletingChannel');
+
+        deleteChannel({ id }, (response) => {
+          if (response.status === 'ok') {
+            resolve();
+            changeProcessName(null);
+            changeActiveChannel(null);
+          }
+        });
+
+        setTimeout(() => {
+          reject(new Error(t('errors.networkError')));
+        }, 5000);
+      });
+    },
+    [dispatch]
+  );
+
+  const handleRenameChannel = useCallback(
+    ({ name, id }: Pick<Channel, 'name' | 'id'>) => {
+      return new Promise<void>((resolve, reject) => {
+        renameChannel({ name, id }, (response) => {
+          if (response.status === 'ok') {
+            resolve();
             changeProcessName(null);
           }
         });
@@ -127,7 +186,41 @@ export const Messenger: FC<Props> = () => {
             data={channels}
             selectedChannel={currentChannel?.id || DEFAULT_SELECTED_CHANNEL}
             onChangeChannel={handleChangeChannel}
-            addingChannels={
+            onDeleteChannel={(id: Channel['id']) => {
+              changeProcessName('deletingChannel');
+              changeActiveChannel({ id, name: '' });
+            }}
+            onRenameChannel={({ id, name }: Pick<Channel, 'id' | 'name'>) => {
+              console.log('id', id);
+              changeProcessName('renamingChannel');
+              changeActiveChannel({ id, name });
+            }}
+            deletingChannel={
+              <Modal
+                isOpened={processName === 'deletingChannel'}
+                title={t(`${processName}.title`)}
+                onClose={() => {
+                  changeProcessName(null);
+                  changeActiveChannel(null);
+                }}
+                body={
+                  <DeletingChannel
+                    onDeleteChannel={() => {
+                      if (!activeChannel) {
+                        return Promise.reject();
+                      }
+
+                      return handleDeleteChannel(activeChannel.id);
+                    }}
+                    onCancel={() => {
+                      changeProcessName(null);
+                      changeActiveChannel(null);
+                    }}
+                  />
+                }
+              />
+            }
+            addingChannel={
               <AddingChannel
                 onAddChannel={() => {
                   changeProcessName('addingChannel');
@@ -149,6 +242,26 @@ export const Messenger: FC<Props> = () => {
                   }
                 />
               </AddingChannel>
+            }
+            renamingChannel={
+              activeChannel && (
+                <Modal
+                  isOpened={processName === 'renamingChannel'}
+                  title={t(`${processName}.title`)}
+                  onClose={() => {
+                    changeProcessName(null);
+                  }}
+                  body={
+                    <RenamingChannelForm
+                      initialValues={{ name: activeChannel.name, id: activeChannel.id }}
+                      onSubmit={handleRenameChannel}
+                      onCancel={() => {
+                        changeProcessName(null);
+                      }}
+                    />
+                  }
+                />
+              )
             }
           />
         </Col>
