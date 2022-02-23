@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import type { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import {
   getChannelsSelector,
@@ -29,6 +30,7 @@ import { AddingMessageForm } from 'features/messages/add/';
 import { getCurrentChannelMessagesSelector, Messages } from 'features/messages/show';
 import { makeMessagesConnection } from 'shared/api/messenger';
 import { Modal } from 'shared/ui';
+import * as wordsFilter from 'leo-profanity';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -40,7 +42,7 @@ export const Messenger: FC<Props> = () => {
   const [activeChannel, changeActiveChannel] = useState<Omit<Channel, 'removable'> | null>(null);
 
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, logOut } = useAuth();
   const dispatch = useAppDispatch();
 
   const channels = useAppSelector(getChannelsSelector);
@@ -68,7 +70,11 @@ export const Messenger: FC<Props> = () => {
         dispatch(setInitialMessagesAction(data.messages));
         dispatch(setInitialChannelsAction(data.channels));
       } catch (error) {
-        console.log(error);
+        const axiosError = error as AxiosError;
+
+        if (axiosError.response?.status === 401) {
+          logOut();
+        }
       }
     };
 
@@ -107,15 +113,20 @@ export const Messenger: FC<Props> = () => {
     handleNewChannel,
     handleNewMessage,
     handleRenamedChannel,
+    logOut,
     user.token,
   ]);
 
-  const handleSubmit = useCallback(
+  const handleSendMessage = useCallback(
     ({ body }: Pick<Message, 'body'>) => {
       if (currentChannel) {
         return new Promise<void>((resolve, reject) => {
           sendMessage(
-            { body, username: user.username, channelId: currentChannel.id },
+            {
+              body: wordsFilter.clean(body),
+              username: user.username,
+              channelId: currentChannel.id,
+            },
             (response) => {
               if (response.status === 'ok') {
                 resolve();
@@ -290,7 +301,7 @@ export const Messenger: FC<Props> = () => {
         </Col>
         <Col className="p-0 h-100">
           <Messages
-            addingMessage={<AddingMessageForm onSubmit={handleSubmit} />}
+            addingMessage={<AddingMessageForm onSubmit={handleSendMessage} />}
             currentChannel={currentChannel}
             currentChannelMessages={currentChannelMessages}
           />

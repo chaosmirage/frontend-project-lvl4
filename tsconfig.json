@@ -8,11 +8,12 @@
       "noImplicitAny": true,
       "module": "es6",
       "moduleResolution": "node",
-      "target": "es5",
+      "target": "esnext",
       "allowJs": false,
       "jsx": "react",
       "allowSyntheticDefaultImports": true,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "types": ["node"],
   },
   "include": [
       "./src/**/*"
