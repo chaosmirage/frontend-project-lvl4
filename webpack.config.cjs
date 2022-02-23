@@ -1,6 +1,7 @@
 // @ts-check
 
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
@@ -19,7 +20,7 @@ module.exports = {
     publicPath: '/assets/',
     historyApiFallback: true,
   },
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [new MiniCssExtractPlugin(), new webpack.EnvironmentPlugin({ ROLLBAR: 'development' })],
   module: {
     rules: [
       {

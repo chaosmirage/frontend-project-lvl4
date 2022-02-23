@@ -10,6 +10,7 @@ import {
 } from 'react-redux';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { ToastContainer } from 'react-toastify';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../../assets/application.scss';
@@ -18,6 +19,7 @@ import { Routing } from 'pages';
 import { AuthProvider } from 'features/auth';
 import { messagesSlice } from 'entities/messages';
 import { channelsSlice } from 'entities/channels';
+import { rollbarConfig } from 'shared/config';
 import ru from './locales/ru.json';
 
 i18n.use(initReactI18next).init({
@@ -48,13 +50,17 @@ export const App: FC = () => {
   }, []);
 
   return (
-    <ReduxProvider store={store}>
-      <AuthProvider>
-        <div className="d-flex flex-column h-100">
-          <Routing />
-        </div>
-        <ToastContainer />
-      </AuthProvider>
-    </ReduxProvider>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <ReduxProvider store={store}>
+          <AuthProvider>
+            <div className="d-flex flex-column h-100">
+              <Routing />
+            </div>
+            <ToastContainer />
+          </AuthProvider>
+        </ReduxProvider>
+      </ErrorBoundary>
+    </RollbarProvider>
   );
 };

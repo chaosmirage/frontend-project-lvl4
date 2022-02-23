@@ -14,3 +14,8 @@ export const apiRoutes = {
   channel: (id: number) => [HOST, 'channels', id].join('/'),
   channelMessages: (id: number) => [HOST, 'channels', id, 'messages'].join('/'),
 };
+
+export const rollbarConfig = {
+  accessToken: process.env.ROLLBAR,
+  environment: 'production',
+};
