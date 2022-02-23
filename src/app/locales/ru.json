@@ -1,7 +1,7 @@
 {
   "ru": {
     "translation": {
-      "appName": "Chat",
+      "appName": "Hexlet Chat",
       "navPanel": {
         "logout": "Выйти"
       },
