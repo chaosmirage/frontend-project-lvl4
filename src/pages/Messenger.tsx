@@ -46,6 +46,7 @@ export const Messenger: FC<Props> = () => {
   const currentChannelMessages = useAppSelector(getCurrentChannelMessagesSelector);
 
   const {
+    disconnect,
     sendMessage,
     addChannel,
     deleteChannel,
@@ -91,7 +92,12 @@ export const Messenger: FC<Props> = () => {
     handleConnect((socket) => {
       console.log('connected', socket.id);
     });
+
+    return () => {
+      disconnect();
+    };
   }, [
+    disconnect,
     dispatch,
     getToken,
     handleConnect,

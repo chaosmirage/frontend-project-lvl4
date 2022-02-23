@@ -19,6 +19,9 @@ export const makeMessagesConnection = () => {
   const socketConnection = makeSocketConnection();
 
   return {
+    disconnect: () => {
+      socketConnection.disconnect();
+    },
     sendMessage: (
       message: Omit<Message, 'id'>,
       handler?: (response: { status: string }) => void
