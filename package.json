@@ -2,7 +2,8 @@
   "name": "@hexlet/code",
   "version": "0.0.1",
   "description": "",
-  "main": "server/index.js",
+  "main": "dist/runApp.bundle.js",
+  "types": "dist/runApp.d.ts",
   "type": "module",
   "engines": {
     "node": "14.x"
