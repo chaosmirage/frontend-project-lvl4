@@ -29,7 +29,13 @@ export const DeletingChannel: FC<DeletingChannelProps> = ({ onDeleteChannel, onC
         <Button disabled={disabled} variant="secondary" onClick={onCancel} className="me-2">
           {t('deletingChannel.cancel')}
         </Button>
-        <Button variant="danger" disabled={disabled} onClick={handleClick}>
+        <Button
+          variant="danger"
+          disabled={disabled}
+          onClick={handleClick}
+          aria-label={t('deletingChannel.delete')}
+          role="button"
+        >
           {t('deletingChannel.delete')}
         </Button>
       </div>

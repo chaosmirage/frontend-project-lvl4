@@ -23,7 +23,7 @@ export const LoginForm: FC<Props> = ({ onSubmit }) => {
         <Form noValidate onSubmit={handleSubmit}>
           <h1 className="text-center mb-4">{t('loginPage.title')}</h1>
           <Form.Group className="mb-3" controlId="validationFormikUsername2">
-            <Form.FloatingLabel label={t('loginPage.loginForm.username')}>
+            <Form.FloatingLabel controlId="username" label={t('loginPage.loginForm.username')}>
               <Form.Control
                 type="text"
                 placeholder={t('loginPage.loginForm.username')}
@@ -42,7 +42,7 @@ export const LoginForm: FC<Props> = ({ onSubmit }) => {
             </Form.FloatingLabel>
           </Form.Group>
           <Form.Group className="mb-3" controlId="validationFormikUsername2">
-            <Form.FloatingLabel label={t('loginPage.loginForm.password')}>
+            <Form.FloatingLabel controlId="password" label={t('loginPage.loginForm.password')}>
               <Form.Control
                 type="password"
                 placeholder={t('loginPage.loginForm.password')}

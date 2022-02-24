@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { FormikHelpers } from 'formik';
 import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import { useAuth } from 'features/auth';
 import { LoginForm } from 'features/auth/ui/LoginForm';
@@ -53,7 +53,7 @@ export const Login: FC<Props> = () => {
           <div className="card-footer p-4">
             <div className="text-center">
               <span>{t('loginPage.dontHaveAcc')}</span>{' '}
-              <a href={pageRoutes.signUp()}>{t('loginPage.actions.registration')}</a>
+              <Link to={pageRoutes.signUp()}>{t('loginPage.actions.registration')}</Link>
             </div>
           </div>
         </div>

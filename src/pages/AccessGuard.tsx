@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react';
 import { useAuth } from 'features/auth';
 import { Navigate } from 'react-router-dom';
 import { GUEST } from 'entities/guest';
+import { pageRoutes } from 'shared/config';
 
 export const AccessGuard: FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useAuth();
@@ -12,5 +13,5 @@ export const AccessGuard: FC<{ children: ReactNode }> = ({ children }) => {
     return <>{children}</>;
   }
 
-  return <Navigate to="/login" />;
+  return <Navigate to={pageRoutes.login()} />;
 };
