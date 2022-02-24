@@ -1,84 +1,82 @@
 {
-  "ru": {
-    "translation": {
-      "appName": "Hexlet Chat",
-      "navPanel": {
-        "logout": "Выйти"
+  "translation": {
+    "appName": "Hexlet Chat",
+    "navPanel": {
+      "logout": "Выйти"
+    },
+    "errors": {
+      "requiredField": "Поле должно содержать значение",
+      "pageNotFound": "Страница не найдена",
+      "invalidUserNameOrPassword": "Неверные имя пользователя или пароль",
+      "networkError": "Ошибка сети",
+      "mustBeUniq": "Должно быть уникальным",
+      "mustBeEqualPasswords": "Пароли должны совпадать",
+      "userAlreadyExist": "Такой пользователь уже существует"
+    },
+    "loginPage": {
+      "title": "Войти",
+      "loginForm": {
+        "username": "Ваш ник",
+        "password": "Пароль",
+        "submit": "Войти"
+      },
+      "dontHaveAcc": "Нет аккаунта?",
+      "actions": {
+        "registration": "Регистрация"
+      }
+    },
+    "signUpPage": {
+      "title": "Регистрация",
+      "signUpForm": {
+        "username": "Имя пользователя",
+        "password": "Пароль",
+        "confirmPassword": "Подтвердите пароль"
+      },
+      "actions": {
+        "signUp": "Зарегистрироваться"
       },
       "errors": {
-        "requiredField": "Поле должно содержать значение",
-        "pageNotFound": "Страница не найдена",
-        "invalidUserNameOrPassword": "Неверные имя пользователя или пароль",
-        "networkError": "Ошибка сети",
-        "mustBeUniq": "Должно быть уникальным",
-        "mustBeEqualPasswords": "Пароли должны совпадать",
-        "userAlreadyExist": "Такой пользователь уже существует"
-      },
-      "loginPage": {
-        "title": "Войти",
-        "loginForm": {
-          "username": "Ваш ник",
-          "password": "Пароль",
-          "submit": "Войти"
-        },
-        "dontHaveAcc": "Нет аккаунта?",
-        "actions": {
-          "registration": "Регистрация"
-        }
-      },
-      "signUpPage": {
-        "title": "Регистрация",
-        "signUpForm": {
-          "username": "Имя пользователя",
-          "password": "Пароль",
-          "confirmPassword": "Подтвердите пароль"
-        },
-        "actions": {
-          "signUp": "Зарегистрироваться"
-        },
-        "errors": {
-          "min": "Не менее 6 символов",
-          "range": "От 3 до 20 символов"
-        }
-      },
-      "notFoundPage": {
-        "goToMainPage": "Но вы можете перейти <linkto>на главную страницу<linkto/>"
-      },
-      "messenger": {
-        "channels": "Каналы",
-        "messages_zero": "{{count}} сообщений",
-        "messages_one": "{{count}} сообщение",
-        "messages_two": "{{count}} сообщения",
-        "messages_few": "{{count}} сообщений",
-        "messages_many": "{{count}} сообщений",
-        "messages_other": "{{count}} сообщений"
-      },
-      "channels": {
-        "channelsManaging": "Управление каналом"
-      },
-      "addMessages": {
-        "newMessage": "Новое сообщение",
-        "send": "Отправить"
-      },
-      "addingChannel": {
-        "title": "Добавить канал",
-        "channelName": "Имя канала",
-        "send": "Отправить",
-        "cancel": "Отменить",
-        "channelWasAdded": "Канал создан"
-      },
-      "deletingChannel": {
-        "title": "Удалить канал",
-        "delete": "Удалить",
-        "confirmDeleting": "Уверены?",
-        "cancel": "Отменить",
-        "channelWasDeleted": "Канал удалён"
-      },
-      "renamingChannel": {
-        "title": "Переименовать канал",
-        "rename": "Переименовать",
-        "channelWasRenamed": "Канал переименован"
+        "min": "Не менее 6 символов",
+        "range": "От 3 до 20 символов"
       }
+    },
+    "notFoundPage": {
+      "goToMainPage": "Но вы можете перейти <linkto>на главную страницу<linkto/>"
+    },
+    "messenger": {
+      "channels": "Каналы",
+      "messages_zero": "{{count}} сообщений",
+      "messages_one": "{{count}} сообщение",
+      "messages_two": "{{count}} сообщения",
+      "messages_few": "{{count}} сообщений",
+      "messages_many": "{{count}} сообщений",
+      "messages_other": "{{count}} сообщений"
+    },
+    "channels": {
+      "channelsManaging": "Управление каналом"
+    },
+    "addMessages": {
+      "newMessage": "Новое сообщение",
+      "send": "Отправить"
+    },
+    "addingChannel": {
+      "title": "Добавить канал",
+      "channelName": "Имя канала",
+      "send": "Отправить",
+      "cancel": "Отменить",
+      "channelWasAdded": "Канал создан"
+    },
+    "deletingChannel": {
+      "title": "Удалить канал",
+      "delete": "Удалить",
+      "confirmDeleting": "Уверены?",
+      "cancel": "Отменить",
+      "channelWasDeleted": "Канал удалён"
+    },
+    "renamingChannel": {
+      "title": "Переименовать канал",
+      "rename": "Переименовать",
+      "channelWasRenamed": "Канал переименован"
     }
   }
 }

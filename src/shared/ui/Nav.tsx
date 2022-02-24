@@ -12,7 +12,7 @@ export const Nav: FC<Props> = ({ logoutButton }) => {
     <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
         <a className="navbar-brand" href="/">
-          {t('appName')}
+          Hexlet Chat
         </a>
         {logoutButton}
       </div>
