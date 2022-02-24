@@ -20,6 +20,8 @@ import { AuthProvider } from 'features/auth';
 import { messagesSlice } from 'entities/messages';
 import { channelsSlice } from 'entities/channels';
 import { rollbarConfig } from 'shared/config';
+import { makeMessagesConnection, MessagesConnectionContext } from 'shared/api/messenger';
+import { makeSocketConnection } from 'shared/lib';
 import ru from './locales/ru.json';
 
 i18n.use(initReactI18next).init({
@@ -44,22 +46,20 @@ export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const App: FC = () => {
-  useEffect(() => {
-    localStorage.debug = 'chat:*';
-  }, []);
-
+export const makeApp = (socketConnection = makeSocketConnection()) => {
   return (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
-        <ReduxProvider store={store}>
-          <AuthProvider>
-            <div className="d-flex flex-column h-100">
-              <Routing />
-            </div>
-            <ToastContainer />
-          </AuthProvider>
-        </ReduxProvider>
+        <MessagesConnectionContext.Provider value={makeMessagesConnection(socketConnection)}>
+          <ReduxProvider store={store}>
+            <AuthProvider>
+              <div className="d-flex flex-column h-100">
+                <Routing />
+              </div>
+              <ToastContainer />
+            </AuthProvider>
+          </ReduxProvider>
+        </MessagesConnectionContext.Provider>
       </ErrorBoundary>
     </RollbarProvider>
   );

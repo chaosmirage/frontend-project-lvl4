@@ -1,12 +1,13 @@
-import React from 'react';
 import { render } from 'react-dom';
 
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
-import { App } from 'app';
+import { makeApp } from 'app';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-render(<App />, document.getElementById('root'));
+const vdom = makeApp();
+
+render(vdom, document.getElementById('chat'));

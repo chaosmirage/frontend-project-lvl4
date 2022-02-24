@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo, useState } from 'react';
+import React, { useEffect, useCallback, useMemo, useState, useContext } from 'react';
 import type { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ import { useAppDispatch, useAppSelector } from 'app';
 import { Message, messengerApi, Channel } from 'shared/api';
 import { AddingMessageForm } from 'features/messages/add/';
 import { getCurrentChannelMessagesSelector, Messages } from 'features/messages/show';
-import { makeMessagesConnection } from 'shared/api/messenger';
+import { MessagesConnectionContext } from 'shared/api/messenger';
 import { Modal } from 'shared/ui';
 import * as wordsFilter from 'leo-profanity';
 
@@ -61,7 +61,7 @@ export const Messenger: FC<Props> = () => {
     handleNewChannel,
     handleDeletedChannel,
     handleRenamedChannel,
-  } = useMemo(() => makeMessagesConnection(), []);
+  } = useContext(MessagesConnectionContext);
 
   useEffect(() => {
     const init = async () => {

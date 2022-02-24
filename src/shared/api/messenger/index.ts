@@ -1,5 +1,6 @@
+import { createContext } from 'react';
 import type { AxiosPromise } from 'axios';
-import { makeRequest, makeSocketConnection } from '../../lib';
+import { makeRequest, makeSocketConnection, SocketConnection } from '../../lib';
 import type { Messenger, Token, Message, Channel } from '../models';
 
 const BASE_URL = '/data';
@@ -15,9 +16,7 @@ export const getData = (token: Token['token']): AxiosPromise<Messenger> => {
 type EmitEventTypes = 'newChannel' | 'removeChannel' | 'newMessage' | 'renameChannel';
 type HandleEventTypes = 'connect' | 'disconnect' | EmitEventTypes;
 
-export const makeMessagesConnection = () => {
-  const socketConnection = makeSocketConnection();
-
+export const makeMessagesConnection = (socketConnection: SocketConnection) => {
   return {
     disconnect: () => {
       socketConnection.disconnect();
@@ -66,3 +65,7 @@ export const makeMessagesConnection = () => {
     },
   };
 };
+
+export const MessagesConnectionContext = createContext<ReturnType<typeof makeMessagesConnection>>(
+  makeMessagesConnection(makeSocketConnection())
+);
