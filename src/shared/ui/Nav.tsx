@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { pageRoutes } from 'shared/config';
 
 interface Props {
   logoutButton: ReactNode;
@@ -11,9 +13,9 @@ export const Nav: FC<Props> = ({ logoutButton }) => {
   return (
     <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
-        <a className="navbar-brand" href="/">
+        <Link to={pageRoutes.root()} className="navbar-brand">
           {t('appName')}
-        </a>
+        </Link>
         {logoutButton}
       </div>
     </div>
