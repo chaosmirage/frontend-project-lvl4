@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import type { FC } from 'react';
+import React from 'react';
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, I18nextProvider } from 'react-i18next';
 import {
   Provider as ReduxProvider,
   TypedUseSelectorHook,
@@ -12,6 +11,8 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { ToastContainer } from 'react-toastify';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 
+import 'core-js/stable/index.js';
+import 'regenerator-runtime/runtime.js';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../assets/application.scss';
 
@@ -23,15 +24,7 @@ import { rollbarConfig } from 'shared/config';
 import { makeMessagesConnection, MessagesConnectionContext } from 'shared/api/messenger';
 import { makeSocketConnection } from 'shared/lib';
 import ru from './locales/ru.json';
-
-i18n.use(initReactI18next).init({
-  resources: ru,
-  lng: 'ru',
-  fallbackLng: 'ru',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+import en from './locales/en.json';
 
 export const store = configureStore({
   reducer: combineReducers({
@@ -46,21 +39,36 @@ export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const makeApp = (socketConnection = makeSocketConnection()) => {
-  return (
-    <RollbarProvider config={rollbarConfig}>
-      <ErrorBoundary>
-        <MessagesConnectionContext.Provider value={makeMessagesConnection(socketConnection)}>
+const makeApp = async (socketConnection = makeSocketConnection()) => {
+  const i18Instance = i18n.createInstance();
+  return i18Instance
+    .use(initReactI18next)
+    .init({
+      resources: { ru, en },
+      lng: 'ru',
+      fallbackLng: 'en',
+      interpolation: {
+        escapeValue: false,
+      },
+    })
+    .then(() => (
+      <RollbarProvider config={rollbarConfig}>
+        <ErrorBoundary>
           <ReduxProvider store={store}>
-            <AuthProvider>
-              <div className="d-flex flex-column h-100">
-                <Routing />
-              </div>
-              <ToastContainer />
-            </AuthProvider>
+            <I18nextProvider i18n={i18Instance}>
+              <MessagesConnectionContext.Provider value={makeMessagesConnection(socketConnection)}>
+                <AuthProvider>
+                  <div className="d-flex flex-column h-100">
+                    <Routing />
+                  </div>
+                  <ToastContainer autoClose={7000} />
+                </AuthProvider>
+              </MessagesConnectionContext.Provider>
+            </I18nextProvider>
           </ReduxProvider>
-        </MessagesConnectionContext.Provider>
-      </ErrorBoundary>
-    </RollbarProvider>
-  );
+        </ErrorBoundary>
+      </RollbarProvider>
+    ));
 };
+
+export default makeApp;

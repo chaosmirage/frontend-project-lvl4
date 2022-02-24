@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Modal as BootstrapModal } from 'react-bootstrap';
 
 interface Props {
@@ -9,21 +9,12 @@ interface Props {
 }
 
 export const Modal: FC<Props> = ({ isOpened = false, title, body, onClose }) => {
-  const [isEntered, changeIsEntered] = useState(false);
-
   return (
-    <BootstrapModal
-      onEntered={() => {
-        changeIsEntered(true);
-      }}
-      centered
-      show={isOpened}
-      onHide={onClose}
-    >
+    <BootstrapModal centered show={isOpened} onHide={onClose}>
       <BootstrapModal.Header closeButton>
         <BootstrapModal.Title>{title}</BootstrapModal.Title>
       </BootstrapModal.Header>
-      <BootstrapModal.Body>{isEntered && body}</BootstrapModal.Body>
+      <BootstrapModal.Body>{body}</BootstrapModal.Body>
     </BootstrapModal>
   );
 };

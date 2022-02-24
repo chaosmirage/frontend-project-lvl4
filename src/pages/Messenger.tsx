@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo, useState, useContext } from 'react';
+import React, { useEffect, useCallback, useState, useContext } from 'react';
 import type { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -42,6 +42,7 @@ export const Messenger: FC<Props> = () => {
   const [activeChannel, changeActiveChannel] = useState<Omit<Channel, 'removable'> | null>(null);
 
   const { t } = useTranslation();
+
   const { user, logOut } = useAuth();
   const dispatch = useAppDispatch();
 

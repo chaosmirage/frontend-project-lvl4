@@ -25,7 +25,7 @@ export const SignUpForm: FC<Props> = ({ onSubmit }) => {
         <Form noValidate onSubmit={handleSubmit}>
           <h1 className="text-center mb-4">{t('signUpPage.title')}</h1>
           <Form.Group className="mb-3" controlId="username">
-            <Form.FloatingLabel label={t('signUpPage.signUpForm.username')}>
+            <Form.FloatingLabel controlId="username" label={t('signUpPage.signUpForm.username')}>
               <Form.Control
                 type="text"
                 placeholder={t('signUpPage.signUpForm.username')}
@@ -44,7 +44,7 @@ export const SignUpForm: FC<Props> = ({ onSubmit }) => {
             </Form.FloatingLabel>
           </Form.Group>
           <Form.Group className="mb-3" controlId="password">
-            <Form.FloatingLabel label={t('signUpPage.signUpForm.password')}>
+            <Form.FloatingLabel controlId="password" label={t('signUpPage.signUpForm.password')}>
               <Form.Control
                 type="password"
                 placeholder={t('signUpPage.signUpForm.password')}
@@ -64,7 +64,10 @@ export const SignUpForm: FC<Props> = ({ onSubmit }) => {
             </Form.FloatingLabel>
           </Form.Group>
           <Form.Group className="mb-3" controlId="confirmPassword">
-            <Form.FloatingLabel label={t('signUpPage.signUpForm.confirmPassword')}>
+            <Form.FloatingLabel
+              controlId="confirmPassword"
+              label={t('signUpPage.signUpForm.confirmPassword')}
+            >
               <Form.Control
                 type="password"
                 placeholder={t('signUpPage.signUpForm.confirmPassword')}
